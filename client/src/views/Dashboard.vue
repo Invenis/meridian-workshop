@@ -761,9 +761,23 @@ export default {
 .kpi-card {
   background: white;
   border: 1px solid #e2e8f0;
+  border-left: 3px solid #3b82f6;
   border-radius: 10px;
-  padding: 1rem;
+  padding: 1rem 1rem 1rem 1.25rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
+
+.kpi-card:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  transform: translateY(-1px);
+}
+
+.kpi-card:nth-child(1) { border-left-color: #3b82f6; }
+.kpi-card:nth-child(2) { border-left-color: #10b981; }
+.kpi-card:nth-child(3) { border-left-color: #8b5cf6; }
+.kpi-card:nth-child(4) { border-left-color: #f59e0b; }
+.kpi-card:nth-child(5) { border-left-color: #06b6d4; }
 
 .kpi-header {
   margin-bottom: 0.75rem;
@@ -793,21 +807,21 @@ export default {
 
 .kpi-progress-bar {
   width: 100%;
-  height: 6px;
+  height: 5px;
   background: #f1f5f9;
-  border-radius: 3px;
+  border-radius: 999px;
   overflow: hidden;
 }
 
 .kpi-progress {
   height: 100%;
-  background: #3b82f6;
-  border-radius: 3px;
-  transition: width 0.6s ease;
+  background: linear-gradient(90deg, #3b82f6, #6366f1);
+  border-radius: 999px;
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .kpi-progress.success {
-  background: #10b981;
+  background: linear-gradient(90deg, #10b981, #059669);
 }
 
 .charts-grid {
