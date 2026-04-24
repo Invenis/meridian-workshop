@@ -304,6 +304,83 @@ def get_monthly_trends():
     result.sort(key=lambda x: x['month'])
     return result
 
+class RestockingRecommendation(BaseModel):
+    sku: str
+    item_name: str
+    category: str
+    warehouse: str
+    current_stock: int
+    reorder_point: int
+    recommended_qty: int
+    unit_cost: float
+    total_cost: float
+    priority: str
+    demand_trend: str
+
+PRIORITY_RANK = {'high': 0, 'medium': 1, 'low': 2}
+
+def _calculate_priority(quantity_on_hand: int, deficit_ratio: float, trend: str) -> str:
+    if quantity_on_hand == 0 or trend == 'increasing' or deficit_ratio >= 0.5:
+        return 'high'
+    if deficit_ratio >= 0.2:
+        return 'medium'
+    return 'low'
+
+def _build_recommendation(item: dict, trend: str) -> dict:
+    deficit_ratio = (
+        (item['reorder_point'] - item['quantity_on_hand']) / item['reorder_point']
+        if item['reorder_point'] > 0 else 1.0
+    )
+    priority = _calculate_priority(item['quantity_on_hand'], deficit_ratio, trend)
+    recommended_qty = (item['reorder_point'] * 2) - item['quantity_on_hand']
+    return {
+        'sku': item['sku'],
+        'item_name': item['name'],
+        'category': item['category'],
+        'warehouse': item['warehouse'],
+        'current_stock': item['quantity_on_hand'],
+        'reorder_point': item['reorder_point'],
+        'recommended_qty': recommended_qty,
+        'unit_cost': item['unit_cost'],
+        'total_cost': recommended_qty * item['unit_cost'],
+        'priority': priority,
+        'demand_trend': trend,
+        '_rank': PRIORITY_RANK[priority],
+        '_deficit_ratio': deficit_ratio,
+    }
+
+def _apply_budget(recommendations: list, budget: float) -> list:
+    selected, spent = [], 0.0
+    for rec in recommendations:
+        if spent + rec['total_cost'] <= budget:
+            selected.append(rec)
+            spent += rec['total_cost']
+    return selected
+
+@app.get("/api/restocking/recommendations", response_model=List[RestockingRecommendation])
+def get_restocking_recommendations(
+    budget: Optional[float] = None,
+    warehouse: Optional[str] = None,
+    category: Optional[str] = None
+):
+    """Recommend purchase orders for items at or below reorder point, ranked by priority and fitted within budget."""
+    demand_by_sku = {d['item_sku']: d['trend'] for d in demand_forecasts}
+
+    candidates = apply_filters(inventory_items, warehouse=warehouse, category=category)
+    candidates = [i for i in candidates if i['quantity_on_hand'] <= i['reorder_point']]
+
+    recommendations = [_build_recommendation(item, demand_by_sku.get(item['sku'], 'stable')) for item in candidates]
+    recommendations.sort(key=lambda r: (r['_rank'], -r['_deficit_ratio']))
+
+    if budget is not None:
+        recommendations = _apply_budget(recommendations, budget)
+
+    for rec in recommendations:
+        rec.pop('_rank', None)
+        rec.pop('_deficit_ratio', None)
+
+    return recommendations
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8001)

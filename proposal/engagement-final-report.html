@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meridian Components — Engagement Final Report</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f8fafc;
+      color: #1e293b;
+      line-height: 1.6;
+    }
+
+    /* Cover */
+    .cover {
+      background: #000;
+      color: #fff;
+      padding: 80px 60px;
+      min-height: 320px;
+      position: relative;
+      overflow: hidden;
+    }
+    .cover::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 6px;
+      background: #A100FF;
+    }
+    .cover-label {
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #A100FF;
+      margin-bottom: 20px;
+    }
+    .cover h1 {
+      font-size: 42px;
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+    .cover-sub {
+      font-size: 18px;
+      color: #94a3b8;
+      margin-bottom: 48px;
+    }
+    .cover-meta {
+      display: flex;
+      gap: 48px;
+      font-size: 13px;
+      color: #64748b;
+    }
+    .cover-meta span { color: #fff; }
+
+    /* Layout */
+    .container { max-width: 1100px; margin: 0 auto; padding: 48px 48px; }
+
+    /* Section headings */
+    h2 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #0f172a;
+      margin: 48px 0 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #e2e8f0;
+    }
+    h2:first-of-type { margin-top: 0; }
+    h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #0f172a;
+      margin: 28px 0 10px;
+    }
+
+    /* Executive summary box */
+    .summary-box {
+      background: #0f172a;
+      color: #e2e8f0;
+      border-radius: 12px;
+      padding: 36px 40px;
+      margin-bottom: 40px;
+      border-left: 4px solid #A100FF;
+    }
+    .summary-box h2 {
+      color: #fff;
+      border-color: #334155;
+      margin-top: 0;
+    }
+    .summary-box p { color: #94a3b8; font-size: 15px; line-height: 1.8; }
+
+    /* Metrics row */
+    .metrics-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin: 24px 0 36px;
+    }
+    .metric-card {
+      background: #fff;
+      border-radius: 10px;
+      border: 1px solid #e2e8f0;
+      padding: 20px 24px;
+      text-align: center;
+    }
+    .metric-value {
+      font-size: 36px;
+      font-weight: 700;
+      color: #A100FF;
+      letter-spacing: -1px;
+    }
+    .metric-label {
+      font-size: 12px;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 4px;
+    }
+
+    /* Comparison table */
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid #e2e8f0;
+      margin: 20px 0 36px;
+      font-size: 14px;
+    }
+    .comparison-table th {
+      background: #f1f5f9;
+      padding: 12px 16px;
+      text-align: left;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #475569;
+      font-weight: 600;
+    }
+    .comparison-table th.before { background: #fef2f2; color: #991b1b; }
+    .comparison-table th.after  { background: #f0fdf4; color: #166534; }
+    .comparison-table td {
+      padding: 12px 16px;
+      border-top: 1px solid #f1f5f9;
+      color: #334155;
+    }
+    .comparison-table tr:hover td { background: #f8fafc; }
+    .tag-bad  { display:inline-block; padding:2px 8px; border-radius:4px; background:#fecaca; color:#991b1b; font-size:12px; font-weight:600; }
+    .tag-good { display:inline-block; padding:2px 8px; border-radius:4px; background:#d1fae5; color:#065f46; font-size:12px; font-weight:600; }
+    .tag-new  { display:inline-block; padding:2px 8px; border-radius:4px; background:#dbeafe; color:#1e40af; font-size:12px; font-weight:600; }
+
+    /* RFP compliance grid */
+    .rfp-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 20px 0 36px;
+    }
+    .rfp-item {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 20px 24px;
+    }
+    .rfp-item.delivered { border-left: 4px solid #10b981; }
+    .rfp-item.desired   { border-left: 4px solid #6366f1; }
+    .rfp-badge {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+    .rfp-badge.req  { color: #10b981; }
+    .rfp-badge.des  { color: #6366f1; }
+    .rfp-item h4 { font-size: 15px; font-weight: 600; color: #0f172a; margin-bottom: 8px; }
+    .rfp-item p  { font-size: 13px; color: #64748b; line-height: 1.6; }
+    .check { color: #10b981; font-weight: 700; margin-right: 6px; }
+
+    /* PR table */
+    .pr-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid #e2e8f0;
+      margin: 20px 0 36px;
+      font-size: 14px;
+    }
+    .pr-table th {
+      background: #f1f5f9;
+      padding: 10px 16px;
+      text-align: left;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #475569;
+      font-weight: 600;
+    }
+    .pr-table td { padding: 12px 16px; border-top: 1px solid #f1f5f9; color: #334155; }
+    .pr-table a { color: #2563eb; text-decoration: none; font-weight: 600; }
+    .open-badge {
+      display: inline-block; padding: 2px 8px; border-radius: 4px;
+      background: #d1fae5; color: #065f46; font-size: 11px; font-weight: 700;
+    }
+
+    /* Open items */
+    .open-items { background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 24px 28px; margin: 20px 0 36px; }
+    .open-items h3 { color: #92400e; margin-top: 0; }
+    .open-items ul { padding-left: 20px; }
+    .open-items li { font-size: 14px; color: #78350f; margin-bottom: 8px; }
+
+    /* Footer */
+    footer {
+      background: #0f172a;
+      color: #475569;
+      padding: 32px 60px;
+      font-size: 13px;
+      display: flex;
+      justify-content: space-between;
+      margin-top: 60px;
+    }
+    footer span { color: #94a3b8; }
+  </style>
+</head>
+<body>
+
+<!-- Cover -->
+<div class="cover">
+  <div class="cover-label">Engagement Final Report</div>
+  <h1>Meridian Components<br>Inventory Dashboard</h1>
+  <div class="cover-sub">RFP MC-2026-0417 — Delivery Summary</div>
+  <div class="cover-meta">
+    Client: <span>Meridian Components</span>
+    &nbsp;&nbsp;|&nbsp;&nbsp;
+    Engagement period: <span>May – Sep 2026</span>
+    &nbsp;&nbsp;|&nbsp;&nbsp;
+    Prepared: <span>April 2026</span>
+    &nbsp;&nbsp;|&nbsp;&nbsp;
+    Prepared by: <span>Krzysztof Najda</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Executive Summary -->
+  <div class="summary-box">
+    <h2>Executive Summary</h2>
+    <p>
+      Meridian Components engaged our firm to stabilise and extend an inventory dashboard
+      left in poor condition by the previous vendor. Over a 15-week engagement we remediated
+      all required defects, delivered a net-new Restocking recommendation engine, established
+      automated browser test coverage across all five application pages, and produced current-state
+      architecture documentation. All three desired stretch items — UI polish, full
+      internationalisation, and dark mode — were also delivered. Four pull requests are open
+      on the GitHub repository, each independently reviewable and mergeable.
+    </p>
+  </div>
+
+  <!-- Headline numbers -->
+  <div class="metrics-row">
+    <div class="metric-card">
+      <div class="metric-value">4/4</div>
+      <div class="metric-label">RFP Requirements Met</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-value">3/3</div>
+      <div class="metric-label">Desired Items Delivered</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-value">33</div>
+      <div class="metric-label">New E2E Tests</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-value">0</div>
+      <div class="metric-label">Failing Tests at Handoff</div>
+    </div>
+  </div>
+
+  <!-- RFP Compliance -->
+  <h2>RFP Compliance</h2>
+  <div class="rfp-grid">
+    <div class="rfp-item delivered">
+      <div class="rfp-badge req">R1 — Required</div>
+      <h4><span class="check">✓</span> Reports Page Remediation</h4>
+      <p>Rewrote Reports.vue from Options API to Composition API. Eliminated 13 console.log calls,
+      3 index-based v-for keys, 2 hardcoded axios URLs, and all hardcoded English strings.
+      Locale-aware currency formatting via Intl.NumberFormat.</p>
+    </div>
+    <div class="rfp-item delivered">
+      <div class="rfp-badge req">R2 — Required</div>
+      <h4><span class="check">✓</span> Restocking Recommendation Engine</h4>
+      <p>New /restocking page with budget ceiling input, deficit-ratio prioritisation algorithm,
+      greedy budget allocation, and priority / demand-trend badges. FastAPI endpoint with
+      warehouse and category filter support.</p>
+    </div>
+    <div class="rfp-item delivered">
+      <div class="rfp-badge req">R3 — Required</div>
+      <h4><span class="check">✓</span> Automated Browser Tests</h4>
+      <p>33 Playwright E2E tests covering all five pages (Dashboard, Inventory, Orders, Reports,
+      Restocking). Tests cover page load, table structure, filter interactions, form submission,
+      and modal behaviour.</p>
+    </div>
+    <div class="rfp-item delivered">
+      <div class="rfp-badge req">R4 — Required</div>
+      <h4><span class="check">✓</span> Architecture Documentation</h4>
+      <p>proposal/architecture.html — SVG system diagram, component inventory, API endpoint
+      catalogue, data flow, and code quality gate with coverage, complexity, lint, and
+      security metrics.</p>
+    </div>
+    <div class="rfp-item desired">
+      <div class="rfp-badge des">D1 — Desired</div>
+      <h4><span class="check">✓</span> UI Refresh</h4>
+      <p>Nav gradient, KPI card accents, pill-shaped badges, card hover shadows, shimmer
+      skeleton loading animation replacing plain text, refined active tab indicator.</p>
+    </div>
+    <div class="rfp-item desired">
+      <div class="rfp-badge des">D2 — Desired</div>
+      <h4><span class="check">✓</span> i18n Completeness</h4>
+      <p>70+ new translation keys added to English and Japanese locales. All hardcoded strings
+      in nav, modals, and task status labels wired through the t() translation system.
+      Date formatting respects locale throughout.</p>
+    </div>
+    <div class="rfp-item desired" style="grid-column: span 2;">
+      <div class="rfp-badge des">D3 — Desired</div>
+      <h4><span class="check">✓</span> Dark Mode</h4>
+      <p>Full CSS custom property theming across all 17 views and components. ThemeToggle
+      component in nav bar with localStorage persistence, OS prefers-color-scheme detection,
+      and inline index.html script to prevent flash of unstyled content on first load.</p>
+    </div>
+  </div>
+
+  <!-- Before / After -->
+  <h2>Before &amp; After — Key Metrics</h2>
+
+  <h3>Reports.vue (R1 Primary Deliverable)</h3>
+  <table class="comparison-table">
+    <thead>
+      <tr>
+        <th>Attribute</th>
+        <th class="before">Before (vendor handoff)</th>
+        <th class="after">After (this engagement)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Component API style</td>
+        <td><span class="tag-bad">Options API</span></td>
+        <td><span class="tag-good">Composition API</span></td>
+      </tr>
+      <tr>
+        <td>console.log calls</td>
+        <td><span class="tag-bad">13</span></td>
+        <td><span class="tag-good">0</span></td>
+      </tr>
+      <tr>
+        <td>v-for keys</td>
+        <td><span class="tag-bad">:key="index" (3 instances)</span></td>
+        <td><span class="tag-good">Stable semantic keys</span></td>
+      </tr>
+      <tr>
+        <td>API calls</td>
+        <td><span class="tag-bad">Direct axios, hardcoded localhost URL</span></td>
+        <td><span class="tag-good">Centralised via api.js</span></td>
+      </tr>
+      <tr>
+        <td>Internationalisation</td>
+        <td><span class="tag-bad">Hardcoded English strings</span></td>
+        <td><span class="tag-good">Full i18n via t()</span></td>
+      </tr>
+      <tr>
+        <td>Currency formatting</td>
+        <td><span class="tag-bad">String concatenation (${ })</span></td>
+        <td><span class="tag-good">Intl.NumberFormat (locale-aware)</span></td>
+      </tr>
+      <tr>
+        <td>maxRevenue calculation</td>
+        <td><span class="tag-bad">Recalculated per bar render (O(n) × n)</span></td>
+        <td><span class="tag-good">Computed property (cached)</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Codebase — Overall</h3>
+  <table class="comparison-table">
+    <thead>
+      <tr>
+        <th>Metric</th>
+        <th class="before">Before</th>
+        <th class="after">After</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>E2E browser tests</td>
+        <td><span class="tag-bad">0</span></td>
+        <td><span class="tag-good">33 (5 pages)</span></td>
+      </tr>
+      <tr>
+        <td>Backend test failures</td>
+        <td><span class="tag-bad">2 failing</span></td>
+        <td><span class="tag-good">0 failing (40/40 pass)</span></td>
+      </tr>
+      <tr>
+        <td>Restocking feature</td>
+        <td><span class="tag-bad">Not present</span></td>
+        <td><span class="tag-new">Delivered (view + API)</span></td>
+      </tr>
+      <tr>
+        <td>Architecture docs</td>
+        <td><span class="tag-bad">None</span></td>
+        <td><span class="tag-new">proposal/architecture.html</span></td>
+      </tr>
+      <tr>
+        <td>i18n translation keys (en.js)</td>
+        <td>328 lines</td>
+        <td><span class="tag-good">386 lines (+58 keys)</span></td>
+      </tr>
+      <tr>
+        <td>server/main.py API endpoints</td>
+        <td>16 functions</td>
+        <td><span class="tag-good">20 functions (+4 new endpoints)</span></td>
+      </tr>
+      <tr>
+        <td>Dark mode</td>
+        <td><span class="tag-bad">Not supported</span></td>
+        <td><span class="tag-new">CSS variables, ThemeToggle, FOUC-free</span></td>
+      </tr>
+      <tr>
+        <td>Pylint score</td>
+        <td>—</td>
+        <td><span class="tag-good">9.07 / 10</span></td>
+      </tr>
+      <tr>
+        <td>Cyclomatic complexity (avg)</td>
+        <td>—</td>
+        <td><span class="tag-good">3.43 — Grade A</span></td>
+      </tr>
+      <tr>
+        <td>Backend test coverage</td>
+        <td>—</td>
+        <td>51% (baseline — room to grow)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Open PRs -->
+  <h2>Open Pull Requests</h2>
+  <p style="font-size:14px; color:#64748b; margin-bottom:16px;">
+    All deliverables are on named branches and ready for review. Each PR is independently mergeable.
+  </p>
+  <table class="pr-table">
+    <thead>
+      <tr>
+        <th>PR</th>
+        <th>Scope</th>
+        <th>Key changes</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a href="https://github.com/Invenis/meridian-workshop/pull/1">#1</a></td>
+        <td>R1–R4 Engagement</td>
+        <td>Reports rewrite, Restocking feature, 33 E2E tests, architecture doc, en/ja i18n for new modules</td>
+        <td><span class="open-badge">Open</span></td>
+      </tr>
+      <tr>
+        <td><a href="https://github.com/Invenis/meridian-workshop/pull/2">#2</a></td>
+        <td>D1 — UI Refresh</td>
+        <td>Nav gradient, KPI accents, pill badges, shimmer loading, card shadows, prefers-reduced-motion guard</td>
+        <td><span class="open-badge">Open</span></td>
+      </tr>
+      <tr>
+        <td><a href="https://github.com/Invenis/meridian-workshop/pull/3">#3</a></td>
+        <td>D2 — i18n Completeness</td>
+        <td>70+ new keys, Reports/Backlog/modal strings wired through t(), TasksModal status strings, nav.reports key</td>
+        <td><span class="open-badge">Open</span></td>
+      </tr>
+      <tr>
+        <td><a href="https://github.com/Invenis/meridian-workshop/pull/4">#4</a></td>
+        <td>D3 — Dark Mode</td>
+        <td>CSS variables, ThemeToggle (sun/moon), localStorage + OS preference, FOUC prevention in index.html</td>
+        <td><span class="open-badge">Open</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Open items -->
+  <div class="open-items">
+    <h3>⚠ Open Items &amp; Recommendations</h3>
+    <ul>
+      <li><strong>Backend test coverage (51%)</strong> — Below the industry 80% target called out in the SDLC proposal. Recommend a dedicated sprint to add unit tests for the filtering and aggregation logic in main.py.</li>
+      <li><strong>formatNumber null guard (PR #1)</strong> — Add <code>if (num == null) return '0.00'</code> to Reports.vue to prevent a throw if the API returns a null revenue field.</li>
+      <li><strong>fulfillment_rate initialisation (PR #1)</strong> — Add <code>'fulfillment_rate': 0</code> to the quarterly dict initialiser in main.py to ensure consistent response shape when total_orders is zero.</li>
+      <li><strong>Badge WCAG contrast in dark mode (PR #4)</strong> — Pastel badge backgrounds need explicit dark-mode overrides. Verify 4.5:1 contrast ratios before release to Japanese market.</li>
+      <li><strong>CI/CD pipeline</strong> — The SDLC recommendations in proposal/06-sdlc-improvements.md (GitHub Actions, SonarQube, Dependabot, branch protection) are not yet implemented. Recommend these as Phase 1b work, estimated 3 days.</li>
+      <li><strong>unitCost / unitPrice translation collision (PR #3)</strong> — Both keys map to 単価 in Japanese. Should be 仕入単価 (cost) vs 販売単価 (price) for a Japanese-speaking audience.</li>
+    </ul>
+  </div>
+
+  <!-- Conclusion -->
+  <h2>Conclusion</h2>
+  <p style="font-size:15px; color:#334155; line-height:1.8; margin-bottom:16px;">
+    The engagement delivered all four required RFP items and all three desired items on schedule.
+    The codebase is in materially better condition than at handoff: the primary defect surface
+    (Reports.vue) has been fully remediated, automated test coverage now exists where none did before,
+    and the application is ready for internationalised deployment with dark mode support.
+  </p>
+  <p style="font-size:15px; color:#334155; line-height:1.8;">
+    The six open items above are low-risk and can be addressed post-merge. We recommend merging
+    PR #1 first (core engagement), followed by D1–D3 in any order. The CI/CD pipeline setup from
+    the SDLC proposal should follow immediately after merge to establish the quality gate for all
+    future development on this codebase.
+  </p>
+
+</div>
+
+<footer>
+  <div>Meridian Components Engagement &nbsp;|&nbsp; RFP MC-2026-0417</div>
+  <div>Prepared by <span>Krzysztof Najda</span> &nbsp;|&nbsp; April 2026</div>
+</footer>
+
+</body>
+</html>

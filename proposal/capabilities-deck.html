@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meridian Components Proposal</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: #0f172a;
+    color: #e2e8f0;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .deck {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+  }
+
+  .slide {
+    display: none;
+    width: 100%;
+    height: 100vh;
+    padding: 80px 120px;
+    flex-direction: column;
+    justify-content: center;
+    position: absolute;
+    top: 0; left: 0;
+  }
+
+  .slide.active { display: flex; }
+
+  .slide-number {
+    position: absolute;
+    bottom: 40px;
+    right: 60px;
+    font-size: 13px;
+    color: #475569;
+    letter-spacing: 0.05em;
+  }
+
+  .label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #6366f1;
+    margin-bottom: 24px;
+  }
+
+  h1 {
+    font-size: 56px;
+    font-weight: 700;
+    line-height: 1.1;
+    color: #f8fafc;
+    margin-bottom: 24px;
+  }
+
+  h2 {
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #f8fafc;
+    margin-bottom: 32px;
+  }
+
+  h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #f8fafc;
+    margin-bottom: 8px;
+  }
+
+  p {
+    font-size: 20px;
+    line-height: 1.6;
+    color: #94a3b8;
+    max-width: 800px;
+  }
+
+  .subtitle {
+    font-size: 24px;
+    color: #64748b;
+    margin-top: 8px;
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-top: 8px;
+  }
+
+  .grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+    margin-top: 8px;
+  }
+
+  .card {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 28px;
+  }
+
+  .card p {
+    font-size: 16px;
+    margin-top: 8px;
+  }
+
+  .pill {
+    display: inline-block;
+    background: #312e81;
+    color: #a5b4fc;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 999px;
+    margin-bottom: 12px;
+  }
+
+  .pill.green { background: #14532d; color: #86efac; }
+  .pill.yellow { background: #713f12; color: #fde68a; }
+  .pill.red { background: #7f1d1d; color: #fca5a5; }
+
+  .big-stat {
+    font-size: 64px;
+    font-weight: 800;
+    color: #6366f1;
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+
+  .divider {
+    width: 60px;
+    height: 4px;
+    background: #6366f1;
+    border-radius: 2px;
+    margin-bottom: 32px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+    font-size: 17px;
+  }
+
+  th {
+    text-align: left;
+    padding: 12px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #475569;
+    border-bottom: 1px solid #1e293b;
+  }
+
+  td {
+    padding: 14px 16px;
+    color: #cbd5e1;
+    border-bottom: 1px solid #1e293b;
+  }
+
+  td:first-child { color: #f8fafc; font-weight: 500; }
+
+  .accent { color: #818cf8; }
+
+  .nav {
+    position: fixed;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    z-index: 100;
+  }
+
+  .nav button {
+    background: #1e293b;
+    border: 1px solid #334155;
+    color: #94a3b8;
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .nav button:hover { background: #334155; color: #f8fafc; }
+
+  .dots {
+    display: flex;
+    gap: 6px;
+  }
+
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #334155;
+    transition: background 0.2s;
+  }
+
+  .dot.active { background: #6366f1; }
+
+  /* Slide-specific backgrounds */
+  .slide-title { background: #0f172a; }
+  .slide-title::before {
+    content: '';
+    position: absolute;
+    top: -200px; right: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, #312e8140 0%, transparent 70%);
+    pointer-events: none;
+  }
+</style>
+</head>
+<body>
+
+<div class="deck">
+
+  <!-- Slide 1: Title -->
+  <div class="slide slide-title active">
+    <div class="label">Confidential — Prepared for Meridian Components</div>
+    <h1>Modernizing Your<br>Inventory Dashboard</h1>
+    <p class="subtitle">Response to RFP #MC-2026-0417</p>
+    <p style="margin-top: 40px;">April 28, 2026</p>
+    <div class="slide-number">1 / 12</div>
+  </div>
+
+  <!-- Slide 2: The situation -->
+  <div class="slide">
+    <div class="label">The Situation</div>
+    <h2>Your team is held back by unfinished work</h2>
+    <div class="divider"></div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="pill red">Reports</div>
+        <h3>8+ known defects</h3>
+        <p>Filters, i18n gaps, and data inconsistencies the previous vendor never resolved</p>
+      </div>
+      <div class="card">
+        <div class="pill yellow">Restocking</div>
+        <h3>Feature never built</h3>
+        <p>Your operations team still doesn't have the purchase order recommendation tool they requested</p>
+      </div>
+      <div class="card">
+        <div class="pill red">Testing</div>
+        <h3>No test coverage</h3>
+        <p>IT can't safely approve changes — every fix requires a risk conversation instead of a deployment</p>
+      </div>
+    </div>
+    <div class="slide-number">2 / 12</div>
+  </div>
+
+  <!-- Slide 3: Root cause -->
+  <div class="slide">
+    <div class="label">Root Cause</div>
+    <h2>This is a vendor execution problem,<br>not a technology problem</h2>
+    <div class="divider"></div>
+    <p>The underlying stack — Vue 3, FastAPI, a clean component architecture — is sound. The gaps are in delivery: unresolved defects, deferred testing, and a handoff document thin enough to suggest the previous vendor was already out the door.</p>
+    <p style="margin-top: 24px;">We've seen this before. We know how to fix it.</p>
+    <div class="slide-number">3 / 12</div>
+  </div>
+
+  <!-- Slide 4: Our approach -->
+  <div class="slide">
+    <div class="label">Our Approach</div>
+    <h2>Ground truth first.<br>Deliver in priority order.</h2>
+    <div class="divider"></div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="pill">Week 1–2</div>
+        <h3>Architecture Review</h3>
+        <p>Direct review of the codebase — not the previous vendor's notes. Accurate scoping before we commit to anything.</p>
+      </div>
+      <div class="card">
+        <div class="pill green">Before any change ships</div>
+        <h3>Test Coverage First</h3>
+        <p>E2E browser tests in place before any fix reaches production. IT's approval gate, cleared early.</p>
+      </div>
+      <div class="card">
+        <div class="pill">Weeks 3–5</div>
+        <h3>Reports Remediation</h3>
+        <p>Every logged defect resolved. Operations sign-off required before we close the item.</p>
+      </div>
+      <div class="card">
+        <div class="pill">Weeks 6–10</div>
+        <h3>Restocking Feature</h3>
+        <p>PO recommendations based on stock levels, demand forecasts, and a budget ceiling your team controls.</p>
+      </div>
+    </div>
+    <div class="slide-number">4 / 12</div>
+  </div>
+
+  <!-- Slide 5: R1 Reports -->
+  <div class="slide">
+    <div class="label">Requirement R1</div>
+    <h2>Reports Module Remediation</h2>
+    <div class="divider"></div>
+    <p>We will audit the full issue log and resolve all defects — filter behavior, i18n gaps, data inconsistencies, and anything additional uncovered during review. We won't close this item until your operations team has reviewed and signed off.</p>
+    <div class="card" style="margin-top: 40px; max-width: 700px;">
+      <h3>Our commitment</h3>
+      <p>Any issues discovered beyond the logged eight will be flagged and scoped before billing — never added silently.</p>
+    </div>
+    <div class="slide-number">5 / 12</div>
+  </div>
+
+  <!-- Slide 6: R2 Restocking -->
+  <div class="slide">
+    <div class="label">Requirement R2</div>
+    <h2>Restocking Recommendations</h2>
+    <div class="divider"></div>
+    <p>A new view within the existing dashboard — no new system to learn. Surfaces purchase order recommendations based on:</p>
+    <div class="grid-3" style="margin-top: 32px;">
+      <div class="card">
+        <h3>Live stock levels</h3>
+        <p>Current inventory across all three warehouses</p>
+      </div>
+      <div class="card">
+        <h3>Demand forecasts</h3>
+        <p>Based on existing forecast data already in the system</p>
+      </div>
+      <div class="card">
+        <h3>Budget ceiling</h3>
+        <p>Operator-supplied — your team stays in control</p>
+      </div>
+    </div>
+    <div class="slide-number">6 / 12</div>
+  </div>
+
+  <!-- Slide 7: R3 Testing -->
+  <div class="slide">
+    <div class="label">Requirement R3</div>
+    <h2>Automated Browser Testing</h2>
+    <div class="divider"></div>
+    <p>End-to-end test coverage for critical user flows, established before any changes reach production. This isn't a deliverable at the end — it's infrastructure we put in place at the start so every fix is covered as it lands.</p>
+    <div class="card" style="margin-top: 40px; max-width: 700px;">
+      <h3>What this means for IT</h3>
+      <p>Tests are documented and maintained by Meridian IT after handoff. Future changes can be approved by running the suite — not by risk assessment.</p>
+    </div>
+    <div class="slide-number">7 / 12</div>
+  </div>
+
+  <!-- Slide 8: Timeline -->
+  <div class="slide">
+    <div class="label">Timeline</div>
+    <h2>Required items complete by Q3</h2>
+    <div class="divider"></div>
+    <table>
+      <tr><th>Milestone</th><th>Date</th><th>Deliverable</th></tr>
+      <tr><td>Kickoff</td><td>May 19</td><td>Engagement start, access confirmed</td></tr>
+      <tr><td>Architecture complete</td><td>Jun 2</td><td>R4 delivered; test scope confirmed</td></tr>
+      <tr><td>Reports remediated</td><td>Jun 23</td><td>R1 complete; operations sign-off</td></tr>
+      <tr><td>Tests live</td><td>Jul 7</td><td>R3 complete; IT approval gate cleared</td></tr>
+      <tr><td>Restocking shipped</td><td>Aug 25</td><td>R2 complete; operations accepted</td></tr>
+      <tr><td><strong>Final delivery</strong></td><td><strong>Sep 30</strong></td><td>All deliverables, docs, handoff</td></tr>
+    </table>
+    <div class="slide-number">8 / 12</div>
+  </div>
+
+  <!-- Slide 9: Pricing -->
+  <div class="slide">
+    <div class="label">Pricing</div>
+    <h2>Fixed-fee where we're confident.<br>NTE where we need flexibility.</h2>
+    <div class="divider"></div>
+    <table>
+      <tr><th>Phase</th><th>Structure</th><th>Amount</th></tr>
+      <tr><td>Architecture Review (R4)</td><td>Fixed fee</td><td class="accent">$4,440</td></tr>
+      <tr><td>Reports Remediation (R1)</td><td>Fixed fee</td><td class="accent">$9,900</td></tr>
+      <tr><td>Browser Testing (R3)</td><td>Fixed fee</td><td class="accent">$6,600</td></tr>
+      <tr><td>Restocking Feature (R2)</td><td>T&M, NTE</td><td class="accent">$19,800</td></tr>
+      <tr><td><strong>Total (R1–R4)</strong></td><td></td><td class="accent"><strong>$40,740</strong></td></tr>
+    </table>
+    <p style="margin-top: 24px; font-size: 16px;">Payment tied to accepted deliverables. If a milestone slips, we absorb the catch-up cost.</p>
+    <div class="slide-number">9 / 12</div>
+  </div>
+
+  <!-- Slide 10: Experience -->
+  <div class="slide">
+    <div class="label">Relevant Experience</div>
+    <h2>We've done this before — specifically</h2>
+    <div class="divider"></div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="pill">R1 analog</div>
+        <h3>Logistics dashboard remediation</h3>
+        <p>Inherited a Vue 3 / Python app from a departing vendor. Full remediation + E2E tests in 12 weeks. IT approved deployments independently within 30 days.</p>
+      </div>
+      <div class="card">
+        <div class="pill">R2 analog</div>
+        <h3>PO recommendation engine</h3>
+        <p>Built restocking recommendations into an existing ops dashboard. Stock levels, lead times, budget ceiling. Adopted by operations team within the first week.</p>
+      </div>
+      <div class="card">
+        <div class="pill">D2 analog</div>
+        <h3>Multi-warehouse i18n rollout</h3>
+        <p>Extended English-only platform to Japanese and Korean for warehouse floor staff. Tokyo onboarding time reduced 40% post-rollout.</p>
+      </div>
+    </div>
+    <div class="slide-number">10 / 12</div>
+  </div>
+
+  <!-- Slide 11: Why us -->
+  <div class="slide">
+    <div class="label">Why Us</div>
+    <h2>What's different this time</h2>
+    <div class="divider"></div>
+    <div class="grid-2">
+      <div class="card">
+        <h3>We start from the code, not the docs</h3>
+        <p>Architecture review in week one. Our scoping is based on what's actually in the system — not what the previous vendor said was there.</p>
+      </div>
+      <div class="card">
+        <h3>Tests before changes, not after</h3>
+        <p>Coverage is infrastructure, not a deliverable. Every fix is tested as it lands. IT gets the approval gate they need to move fast.</p>
+      </div>
+      <div class="card">
+        <h3>Fixed milestones, real accountability</h3>
+        <p>Payment is tied to accepted deliverables. If we slip, we absorb the catch-up. Meridian doesn't pay for our delays.</p>
+      </div>
+      <div class="card">
+        <h3>Operations-first, not IT-first</h3>
+        <p>The Restocking feature is the unlock your ops team has been waiting for. We scope and sequence to deliver that value early.</p>
+      </div>
+    </div>
+    <div class="slide-number">11 / 12</div>
+  </div>
+
+  <!-- Slide 12: SDLC -->
+  <div class="slide">
+    <div class="label">Engineering Foundations</div>
+    <h2>Setting you up for whoever comes next</h2>
+    <div class="divider"></div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="pill">CI/CD</div>
+        <h3>GitHub Actions</h3>
+        <p>Every PR runs the full test suite automatically. No manual "did you test this?" — the pipeline answers that.</p>
+      </div>
+      <div class="card">
+        <div class="pill">Code Quality</div>
+        <h3>SonarQube</h3>
+        <p>Automatic code quality and security analysis on every PR. IT gets a quality gate without reading every diff.</p>
+      </div>
+      <div class="card">
+        <div class="pill">Workflow</div>
+        <h3>Branch Protection</h3>
+        <p>No direct pushes to main. PRs require approval + passing CI. Standard practice — takes an hour to configure.</p>
+      </div>
+      <div class="card">
+        <div class="pill">Security</div>
+        <h3>Dependabot + Staging</h3>
+        <p>Automated dependency security updates within 24hrs of disclosure. Changes promoted through staging before production.</p>
+      </div>
+    </div>
+    <p style="margin-top: 28px; font-size: 16px;">Parallel to Phase 1. ~20hrs. The test suite is far more valuable when it runs automatically on every change.</p>
+    <div class="slide-number">12 / 13</div>
+  </div>
+
+  <!-- Slide 13: Close -->
+  <div class="slide slide-title">
+    <div class="label">Next Steps</div>
+    <h1>Let's get your<br>dashboard working.</h1>
+    <div class="divider" style="margin-top: 32px;"></div>
+    <p style="margin-top: 0;">Questions to <span class="accent">procurement@meridiancomponents.example</span> by April 28.</p>
+    <p style="margin-top: 16px;">Engagement start: May 19. Final delivery: September 30.</p>
+    <p style="margin-top: 40px; font-size: 16px; color: #475569;">RFP #MC-2026-0417</p>
+    <div class="slide-number">13 / 13</div>
+  </div>
+
+</div>
+
+<!-- Navigation -->
+<nav class="nav">
+  <button onclick="prev()">← Prev</button>
+  <div class="dots" id="dots"></div>
+  <button onclick="next()">Next →</button>
+</nav>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const dotsEl = document.getElementById('dots');
+  let current = 0;
+
+  slides.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.onclick = () => goTo(i);
+    dotsEl.appendChild(d);
+  });
+
+  function goTo(n) {
+    slides[current].classList.remove('active');
+    dotsEl.children[current].classList.remove('active');
+    current = (n + slides.length) % slides.length;
+    slides[current].classList.add('active');
+    dotsEl.children[current].classList.add('active');
+  }
+
+  function next() { goTo(current + 1); }
+  function prev() { goTo(current - 1); }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next();
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') prev();
+  });
+</script>
+</body>
+</html>
