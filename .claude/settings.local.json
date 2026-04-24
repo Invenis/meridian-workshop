@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(open /Users/krzysztof.najda/projects/claude-training/meridian-workshop/proposal/capabilities-deck.html)"
+    ]
+  }
+}
