@@ -323,7 +323,98 @@ export default {
     search: '検索',
     filter: 'フィルター',
     export: 'エクスポート',
-    items: '件'
+    items: '件',
+    units: '個',
+    days: '日',
+    ofTotal: '全体の',
+    resetFilters: 'フィルターをリセット',
+    actions: '操作'
+  },
+
+  // Reports
+  reports: {
+    title: 'パフォーマンスレポート',
+    description: '四半期別パフォーマンス指標と月別トレンドを表示',
+    loading: 'レポートを読み込み中...',
+    quarterlyPerformance: '四半期別パフォーマンス',
+    monthlyRevenueTrend: '月別収益トレンド',
+    monthOverMonth: '前月比分析',
+    table: {
+      quarter: '四半期',
+      totalOrders: '総注文数',
+      totalRevenue: '総収益',
+      avgOrderValue: '平均注文額',
+      fulfillmentRate: '注文充足率',
+      month: '月',
+      orders: '注文',
+      revenue: '収益',
+      change: '変化',
+      growthRate: '成長率'
+    },
+    stats: {
+      totalRevenueYTD: '総収益（年初来）',
+      avgMonthlyRevenue: '月平均収益',
+      totalOrdersYTD: '総注文数（年初来）',
+      bestPerformingQuarter: '最高パフォーマンス四半期'
+    }
+  },
+
+  // Backlog
+  backlog: {
+    title: 'バックログ管理',
+    description: '在庫不足の追跡と解消',
+    loading: 'バックログを読み込み中...',
+    highPriority: '高優先度',
+    mediumPriority: '中優先度',
+    lowPriority: '低優先度',
+    totalItems: '総バックログ件数',
+    backlogItems: 'バックログ品目',
+    noItems: 'バックログなし - すべての注文を履行できます！',
+    unitsShort: '個不足'
+  },
+
+  // Modals
+  modals: {
+    inventoryShortageDetails: '在庫不足の詳細',
+    inventoryItemDetails: '在庫品目の詳細',
+    productDetails: '製品の詳細',
+    costBreakdown: '{month} コスト内訳',
+    shortageAmount: '不足数量',
+    daysDelayed: '遅延日数',
+    orderId: '注文ID',
+    itemSku: '品目SKU',
+    quantityNeeded: '必要数量',
+    quantityAvailable: '在庫数量',
+    expectedDate: '予定日',
+    status: 'ステータス',
+    priority: '優先度',
+    category: 'カテゴリ',
+    location: '場所',
+    reorderPoint: '再注文点',
+    unitsRemaining: '残数量',
+    unitCost: '単価',
+    totalValue: '総価値',
+    warehouse: '倉庫',
+    quantityOnHand: '手持在庫数',
+    stockLevel: '在庫レベル',
+    vsReorderPoint: '再注文点比',
+    unitsOrdered: '注文数量',
+    totalRevenue: '総収益',
+    currentStock: '現在在庫',
+    firstOrderDate: '初回注文日',
+    stockStatus: '在庫状況',
+    totalCosts: '総コスト',
+    procurement: '調達',
+    operational: '運営',
+    labor: '人件費',
+    overhead: '間接費',
+    notAvailable: '未設定'
+  },
+
+  // Purchase Orders
+  purchaseOrders: {
+    createPO: '発注書作成',
+    viewPO: '発注書表示'
   },
 
   // Product Names

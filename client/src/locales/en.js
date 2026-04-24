@@ -323,6 +323,97 @@ export default {
     search: 'Search',
     filter: 'Filter',
     export: 'Export',
-    items: 'items'
+    items: 'items',
+    units: 'units',
+    days: 'days',
+    ofTotal: 'of total',
+    resetFilters: 'Reset all filters',
+    actions: 'Actions'
+  },
+
+  // Reports
+  reports: {
+    title: 'Performance Reports',
+    description: 'View quarterly performance metrics and monthly trends',
+    loading: 'Loading reports...',
+    quarterlyPerformance: 'Quarterly Performance',
+    monthlyRevenueTrend: 'Monthly Revenue Trend',
+    monthOverMonth: 'Month-over-Month Analysis',
+    table: {
+      quarter: 'Quarter',
+      totalOrders: 'Total Orders',
+      totalRevenue: 'Total Revenue',
+      avgOrderValue: 'Avg Order Value',
+      fulfillmentRate: 'Fulfillment Rate',
+      month: 'Month',
+      orders: 'Orders',
+      revenue: 'Revenue',
+      change: 'Change',
+      growthRate: 'Growth Rate'
+    },
+    stats: {
+      totalRevenueYTD: 'Total Revenue (YTD)',
+      avgMonthlyRevenue: 'Avg Monthly Revenue',
+      totalOrdersYTD: 'Total Orders (YTD)',
+      bestPerformingQuarter: 'Best Performing Quarter'
+    }
+  },
+
+  // Backlog
+  backlog: {
+    title: 'Backlog Management',
+    description: 'Track and resolve inventory shortages',
+    loading: 'Loading backlog...',
+    highPriority: 'High Priority',
+    mediumPriority: 'Medium Priority',
+    lowPriority: 'Low Priority',
+    totalItems: 'Total Backlog Items',
+    backlogItems: 'Backlog Items',
+    noItems: 'No backlog items - all orders can be fulfilled!',
+    unitsShort: 'units short'
+  },
+
+  // Modals
+  modals: {
+    inventoryShortageDetails: 'Inventory Shortage Details',
+    inventoryItemDetails: 'Inventory Item Details',
+    productDetails: 'Product Details',
+    costBreakdown: '{month} Cost Breakdown',
+    shortageAmount: 'Shortage Amount',
+    daysDelayed: 'Days Delayed',
+    orderId: 'Order ID',
+    itemSku: 'Item SKU',
+    quantityNeeded: 'Quantity Needed',
+    quantityAvailable: 'Quantity Available',
+    expectedDate: 'Expected Date',
+    status: 'Status',
+    priority: 'Priority',
+    category: 'Category',
+    location: 'Location',
+    reorderPoint: 'Reorder Point',
+    unitsRemaining: 'Units Remaining',
+    unitCost: 'Unit Cost',
+    totalValue: 'Total Value',
+    warehouse: 'Warehouse',
+    quantityOnHand: 'Quantity on Hand',
+    stockLevel: 'Stock Level',
+    vsReorderPoint: 'vs. reorder point',
+    unitsOrdered: 'Units Ordered',
+    totalRevenue: 'Total Revenue',
+    currentStock: 'Current Stock',
+    firstOrderDate: 'First Order Date',
+    stockStatus: 'Stock Status',
+    totalCosts: 'Total Costs',
+    procurement: 'Procurement',
+    operational: 'Operational',
+    labor: 'Labor',
+    overhead: 'Overhead',
+    notAvailable: 'N/A'
+  },
+
+  // Purchase Orders
+  purchaseOrders: {
+    createPO: 'Create PO',
+    viewPO: 'View PO'
   }
 }
