@@ -210,14 +210,11 @@ export default {
     }
 
     const getStatusText = (dueDate, status) => {
-      const isJapanese = currentLocale.value === 'ja'
-
-      if (status === 'completed') return isJapanese ? '完了' : 'Completed'
-
+      if (status === 'completed') return t('tasks.statusCompleted')
       const statusClass = getStatusClass(dueDate, status)
-      if (statusClass === 'overdue') return isJapanese ? '期限超過' : 'Overdue'
-      if (statusClass === 'urgent') return isJapanese ? 'もうすぐ期限' : 'Due Soon'
-      return isJapanese ? '予定' : 'Upcoming'
+      if (statusClass === 'overdue') return t('tasks.statusOverdue')
+      if (statusClass === 'urgent') return t('tasks.statusDueSoon')
+      return t('tasks.statusUpcoming')
     }
 
     const translatePriority = (priority) => {
