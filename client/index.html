@@ -4,6 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Factory Inventory Management System</title>
+  <script>
+    const saved = localStorage.getItem('theme')
+    const prefersDark = globalThis.matchMedia('(prefers-color-scheme: dark)').matches
+    const theme = saved ?? (prefersDark ? 'dark' : 'light')
+    if (theme === 'dark') document.documentElement.dataset.theme = 'dark'
+  </script>
 </head>
 <body>
   <div id="app"></div>
