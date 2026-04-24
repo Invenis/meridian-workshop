@@ -554,6 +554,14 @@ tbody tr:hover {
   100% { background-position: 0% 50%; }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .loading::before,
+  .loading::after {
+    animation: none;
+    background: #e2e8f0;
+  }
+}
+
 .error {
   background: #fef2f2;
   border: 1px solid #fecaca;
