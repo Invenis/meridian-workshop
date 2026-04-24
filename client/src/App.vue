@@ -183,12 +183,23 @@ body {
 }
 
 .top-nav {
-  background: #ffffff;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
   border-bottom: 1px solid #e2e8f0;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(37, 99, 235, 0.04);
   position: sticky;
   top: 0;
   z-index: 100;
+}
+
+.top-nav::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #2563eb 0%, #7c3aed 50%, #2563eb 100%);
+  opacity: 0.18;
 }
 
 .nav-container {
@@ -218,7 +229,10 @@ body {
 .logo h1 {
   font-size: 1.375rem;
   font-weight: 700;
-  color: #0f172a;
+  background: linear-gradient(135deg, #0f172a 0%, #1e40af 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   letter-spacing: -0.025em;
 }
 
@@ -253,17 +267,19 @@ body {
 
 .nav-tabs a.active {
   color: #2563eb;
-  background: #eff6ff;
+  background: linear-gradient(135deg, #eff6ff 0%, #eef2ff 100%);
+  box-shadow: inset 0 0 0 1px rgba(37, 99, 235, 0.15);
 }
 
 .nav-tabs a.active::after {
   content: '';
   position: absolute;
   bottom: -1px;
-  left: 0;
-  right: 0;
+  left: 10%;
+  right: 10%;
   height: 2px;
-  background: #2563eb;
+  background: linear-gradient(90deg, #2563eb, #7c3aed);
+  border-radius: 2px 2px 0 0;
 }
 
 .main-content {
@@ -276,19 +292,21 @@ body {
 
 .page-header {
   margin-bottom: 1.5rem;
+  padding-left: 0.875rem;
+  border-left: 3px solid #3b82f6;
 }
 
 .page-header h2 {
   font-size: 1.875rem;
   font-weight: 700;
   color: #0f172a;
-  margin-bottom: 0.375rem;
-  letter-spacing: -0.025em;
+  margin-bottom: 0.25rem;
+  letter-spacing: -0.03em;
 }
 
 .page-header p {
   color: #64748b;
-  font-size: 0.938rem;
+  font-size: 0.875rem;
 }
 
 .stats-grid {
@@ -300,15 +318,18 @@ body {
 
 .stat-card {
   background: white;
-  padding: 1.25rem;
+  padding: 1.25rem 1.25rem 1.25rem 1.5rem;
   border-radius: 10px;
   border: 1px solid #e2e8f0;
+  border-left: 3px solid #cbd5e1;
   transition: all 0.2s ease;
+  position: relative;
 }
 
 .stat-card:hover {
   border-color: #cbd5e1;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
+  transform: translateY(-1px);
 }
 
 .stat-label {
@@ -327,16 +348,32 @@ body {
   letter-spacing: -0.025em;
 }
 
+.stat-card.warning {
+  border-left-color: #f97316;
+}
+
 .stat-card.warning .stat-value {
   color: #ea580c;
+}
+
+.stat-card.success {
+  border-left-color: #10b981;
 }
 
 .stat-card.success .stat-value {
   color: #059669;
 }
 
+.stat-card.danger {
+  border-left-color: #ef4444;
+}
+
 .stat-card.danger .stat-value {
   color: #dc2626;
+}
+
+.stat-card.info {
+  border-left-color: #3b82f6;
 }
 
 .stat-card.info .stat-value {
@@ -345,10 +382,17 @@ body {
 
 .card {
   background: white;
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 1.25rem;
   border: 1px solid #e2e8f0;
   margin-bottom: 1.25rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08), 0 1px 4px rgba(0, 0, 0, 0.04);
+  border-color: #cbd5e1;
 }
 
 .card-header {
@@ -400,87 +444,133 @@ td {
 }
 
 tbody tr {
-  transition: background-color 0.15s ease;
+  transition: background-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 tbody tr:hover {
   background: #f8fafc;
+  box-shadow: inset 3px 0 0 #3b82f6;
 }
 
 .badge {
-  display: inline-block;
-  padding: 0.313rem 0.75rem;
-  border-radius: 6px;
-  font-size: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.6875rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.025em;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
 }
 
 .badge.success {
-  background: #d1fae5;
-  color: #065f46;
+  background: #dcfce7;
+  color: #15803d;
+  box-shadow: inset 0 0 0 1px rgba(21, 128, 61, 0.15);
 }
 
 .badge.warning {
-  background: #fed7aa;
-  color: #92400e;
+  background: #ffedd5;
+  color: #c2410c;
+  box-shadow: inset 0 0 0 1px rgba(194, 65, 12, 0.15);
 }
 
 .badge.danger {
-  background: #fecaca;
-  color: #991b1b;
+  background: #fee2e2;
+  color: #b91c1c;
+  box-shadow: inset 0 0 0 1px rgba(185, 28, 28, 0.15);
 }
 
 .badge.info {
   background: #dbeafe;
-  color: #1e40af;
+  color: #1d4ed8;
+  box-shadow: inset 0 0 0 1px rgba(29, 78, 216, 0.15);
 }
 
 .badge.increasing {
-  background: #d1fae5;
-  color: #065f46;
+  background: #dcfce7;
+  color: #15803d;
+  box-shadow: inset 0 0 0 1px rgba(21, 128, 61, 0.15);
 }
 
 .badge.decreasing {
-  background: #fecaca;
-  color: #991b1b;
+  background: #fee2e2;
+  color: #b91c1c;
+  box-shadow: inset 0 0 0 1px rgba(185, 28, 28, 0.15);
 }
 
 .badge.stable {
   background: #e0e7ff;
-  color: #3730a3;
+  color: #4338ca;
+  box-shadow: inset 0 0 0 1px rgba(67, 56, 202, 0.15);
 }
 
 .badge.high {
-  background: #fecaca;
-  color: #991b1b;
+  background: #fee2e2;
+  color: #b91c1c;
+  box-shadow: inset 0 0 0 1px rgba(185, 28, 28, 0.15);
 }
 
 .badge.medium {
-  background: #fed7aa;
-  color: #92400e;
+  background: #ffedd5;
+  color: #c2410c;
+  box-shadow: inset 0 0 0 1px rgba(194, 65, 12, 0.15);
 }
 
 .badge.low {
   background: #dbeafe;
-  color: #1e40af;
+  color: #1d4ed8;
+  box-shadow: inset 0 0 0 1px rgba(29, 78, 216, 0.15);
 }
 
 .loading {
-  text-align: center;
-  padding: 3rem;
-  color: #64748b;
-  font-size: 0.938rem;
+  padding: 2rem;
+}
+
+.loading::before {
+  content: '';
+  display: block;
+  height: 120px;
+  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+  background-size: 400% 100%;
+  animation: skeleton-shimmer 1.4s ease infinite;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
+
+.loading::after {
+  content: '';
+  display: block;
+  height: 80px;
+  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+  background-size: 400% 100%;
+  animation: skeleton-shimmer 1.4s ease infinite 0.2s;
+  border-radius: 10px;
+}
+
+@keyframes skeleton-shimmer {
+  0% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loading::before,
+  .loading::after {
+    animation: none;
+    background: #e2e8f0;
+  }
 }
 
 .error {
   background: #fef2f2;
   border: 1px solid #fecaca;
+  border-left: 3px solid #ef4444;
   color: #991b1b;
-  padding: 1rem;
+  padding: 0.875rem 1rem;
   border-radius: 8px;
   margin: 1rem 0;
-  font-size: 0.938rem;
+  font-size: 0.875rem;
+  font-weight: 500;
 }
 </style>

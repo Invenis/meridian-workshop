@@ -104,10 +104,11 @@ export default {
 .filters-bar {
   background: #f8fafc;
   border-bottom: 1px solid #e2e8f0;
-  padding: 0.75rem 0;
+  padding: 0.625rem 0;
   position: sticky;
   top: 70px;
   z-index: 90;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
 }
 
 .filters-container {
@@ -140,8 +141,8 @@ export default {
 }
 
 .filter-select {
-  padding: 0.4rem 0.75rem;
-  border: 1px solid #cbd5e1;
+  padding: 0.375rem 0.75rem;
+  border: 1px solid #e2e8f0;
   border-radius: 6px;
   font-size: 0.813rem;
   color: #0f172a;
@@ -150,23 +151,25 @@ export default {
   transition: all 0.2s;
   font-weight: 500;
   min-width: 140px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
 .filter-select:hover {
   border-color: #94a3b8;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
 }
 
 .filter-select:focus {
   outline: none;
   border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
 }
 
 .reset-filters-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0.4rem;
+  padding: 0.375rem;
   background: white;
   border: 1px solid #e2e8f0;
   border-radius: 6px;
@@ -174,12 +177,14 @@ export default {
   cursor: pointer;
   transition: all 0.2s;
   flex-shrink: 0;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
 .reset-filters-btn:hover:not(:disabled) {
-  background: #f8fafc;
-  border-color: #cbd5e1;
-  color: #0f172a;
+  background: #fff4ed;
+  border-color: #ea580c;
+  color: #c2410c;
+  box-shadow: 0 1px 4px rgba(249, 115, 22, 0.15);
 }
 
 .reset-filters-btn:disabled {
