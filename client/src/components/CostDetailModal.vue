@@ -4,7 +4,7 @@
       <div v-if="isOpen && costData" class="modal-overlay" @click="close">
         <div class="modal-container" @click.stop>
           <div class="modal-header">
-            <h3 class="modal-title">{{ costData.month }} Cost Breakdown</h3>
+            <h3 class="modal-title">{{ t('modals.costBreakdown', { month: translateMonth(costData.month) }) }}</h3>
             <button class="close-button" @click="close">
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                 <path d="M15 5L5 15M5 5L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
@@ -15,7 +15,7 @@
           <div class="modal-body">
             <div class="cost-summary">
               <div class="summary-card total">
-                <div class="summary-label">Total Costs</div>
+                <div class="summary-label">{{ t('modals.totalCosts') }}</div>
                 <div class="summary-value">{{ currencySymbol }}{{ totalCosts.toLocaleString() }}</div>
               </div>
             </div>
@@ -30,11 +30,11 @@
                     </svg>
                   </div>
                   <div class="cost-info">
-                    <div class="cost-name">Procurement</div>
+                    <div class="cost-name">{{ t('modals.procurement') }}</div>
                     <div class="cost-amount">{{ currencySymbol }}{{ costData.procurement.toLocaleString() }}</div>
                   </div>
                 </div>
-                <div class="cost-percentage">{{ getProcurementPercentage() }}% of total</div>
+                <div class="cost-percentage">{{ getProcurementPercentage() }}% {{ t('common.ofTotal') }}</div>
               </div>
 
               <div class="cost-item operational">
@@ -46,11 +46,11 @@
                     </svg>
                   </div>
                   <div class="cost-info">
-                    <div class="cost-name">Operational</div>
+                    <div class="cost-name">{{ t('modals.operational') }}</div>
                     <div class="cost-amount">{{ currencySymbol }}{{ costData.operational.toLocaleString() }}</div>
                   </div>
                 </div>
-                <div class="cost-percentage">{{ getOperationalPercentage() }}% of total</div>
+                <div class="cost-percentage">{{ getOperationalPercentage() }}% {{ t('common.ofTotal') }}</div>
               </div>
 
               <div class="cost-item labor">
@@ -62,11 +62,11 @@
                     </svg>
                   </div>
                   <div class="cost-info">
-                    <div class="cost-name">Labor</div>
+                    <div class="cost-name">{{ t('modals.labor') }}</div>
                     <div class="cost-amount">{{ currencySymbol }}{{ costData.labor.toLocaleString() }}</div>
                   </div>
                 </div>
-                <div class="cost-percentage">{{ getLaborPercentage() }}% of total</div>
+                <div class="cost-percentage">{{ getLaborPercentage() }}% {{ t('common.ofTotal') }}</div>
               </div>
 
               <div class="cost-item overhead">
@@ -77,17 +77,17 @@
                     </svg>
                   </div>
                   <div class="cost-info">
-                    <div class="cost-name">Overhead</div>
+                    <div class="cost-name">{{ t('modals.overhead') }}</div>
                     <div class="cost-amount">{{ currencySymbol }}{{ costData.overhead.toLocaleString() }}</div>
                   </div>
                 </div>
-                <div class="cost-percentage">{{ getOverheadPercentage() }}% of total</div>
+                <div class="cost-percentage">{{ getOverheadPercentage() }}% {{ t('common.ofTotal') }}</div>
               </div>
             </div>
           </div>
 
           <div class="modal-footer">
-            <button class="btn-secondary" @click="close">Close</button>
+            <button class="btn-secondary" @click="close">{{ t('common.close') }}</button>
           </div>
         </div>
       </div>
@@ -99,7 +99,7 @@
 import { computed } from 'vue'
 import { useI18n } from '../composables/useI18n'
 
-const { currentCurrency } = useI18n()
+const { t, currentCurrency } = useI18n()
 
 const currencySymbol = computed(() => {
   return currentCurrency.value === 'JPY' ? '¥' : '$'
@@ -123,6 +123,24 @@ const totalCosts = computed(() => {
   return props.costData.procurement + props.costData.operational +
          props.costData.labor + props.costData.overhead
 })
+
+const translateMonth = (month) => {
+  const monthMap = {
+    'Jan': t('months.jan'),
+    'Feb': t('months.feb'),
+    'Mar': t('months.mar'),
+    'Apr': t('months.apr'),
+    'May': t('months.may'),
+    'Jun': t('months.jun'),
+    'Jul': t('months.jul'),
+    'Aug': t('months.aug'),
+    'Sep': t('months.sep'),
+    'Oct': t('months.oct'),
+    'Nov': t('months.nov'),
+    'Dec': t('months.dec')
+  }
+  return monthMap[month] || month
+}
 
 const getProcurementPercentage = () => {
   if (!props.costData || totalCosts.value === 0) return 0
@@ -235,7 +253,7 @@ const close = () => {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  opacity: 0.9;
+  color: rgba(255, 255, 255, 0.95);
   margin-bottom: 0.5rem;
 }
 
@@ -294,23 +312,23 @@ const close = () => {
 }
 
 .cost-item.procurement .cost-icon {
-  background: #3b82f6;
-  color: white;
+  background: #1d4ed8;
+  color: #ffffff;
 }
 
 .cost-item.operational .cost-icon {
-  background: #8b5cf6;
-  color: white;
+  background: #6d28d9;
+  color: #ffffff;
 }
 
 .cost-item.labor .cost-icon {
-  background: #10b981;
-  color: white;
+  background: #047857;
+  color: #ffffff;
 }
 
 .cost-item.overhead .cost-icon {
-  background: #f59e0b;
-  color: white;
+  background: #b45309;
+  color: #ffffff;
 }
 
 .cost-info {
